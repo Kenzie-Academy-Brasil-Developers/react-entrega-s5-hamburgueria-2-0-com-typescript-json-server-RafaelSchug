@@ -4,6 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { StyledMUICard } from "./style";
+import { useAuth } from "../../providers/Auth";
 
 interface Types {
   title?: string;
@@ -14,30 +15,38 @@ interface Types {
 }
 
 const StyledCard = ({ title, category, price, image, id }: Types) => {
+  const { isAuth } = useAuth();
   return (
-    <StyledMUICard sx={{ maxWidth: 300, width: "100%", minWidth: 230 }}>
-      <CardMedia
-        component="img"
-        height="170"
-        image="https://imagensemoldes.com.br/wp-content/uploads/2020/03/Foto-X-Burguer-Hamburguer-Cheeseburguer-PNG-1024x853.png"
-        alt="ilustration"
-        style={{ width: "100%", background: "#ececec" }}
-      />
+    <StyledMUICard>
+      <div className="image_wrapper">
+        <CardMedia
+          component="img"
+          image={image}
+          alt="ilustration"
+          style={{
+            width: "140px",
+            objectFit: "contain",
+            height: "140px",
+          }}
+        />
+      </div>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Hamburguer
+          {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Sanduíches
+          {category}
         </Typography>
         <Typography variant="body1" color="text.primary">
-          R$ 12,00
+          {price}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained">
-          Adicionar
-        </Button>
+        {isAuth && (
+          <Button size="small" variant="contained" sx={{ color: "#fff" }}>
+            Adicionar
+          </Button>
+        )}
       </CardActions>
     </StyledMUICard>
   );

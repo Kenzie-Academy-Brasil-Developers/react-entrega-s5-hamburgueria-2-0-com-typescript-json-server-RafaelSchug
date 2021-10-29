@@ -2,12 +2,15 @@ import Header from "../../components/Header";
 import Card from "../../components/Card";
 import { useAuth } from "../../providers/Auth";
 import { useEffect } from "react";
+import { useProducts } from "../../providers/Products";
 
 const Dashboard = () => {
   const { isAuth } = useAuth();
+  const { products } = useProducts();
 
   useEffect(() => {
     console.log(isAuth);
+    console.log(products);
   }, []);
 
   return (
@@ -17,14 +20,23 @@ const Dashboard = () => {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          height: "calc(100vh - 60px)",
+          minHeight: "calc(100vh - 60px)",
           justifyContent: "center",
           alignItems: "flex-start",
           gap: "20px",
           padding: "50px",
         }}
       >
-        <Card></Card>
+        {products.map((item, index) => {
+          return (
+            <Card
+              key={index}
+              title={item.title}
+              image={item.image}
+              price={item.price}
+            ></Card>
+          );
+        })}
       </div>
     </>
   );
