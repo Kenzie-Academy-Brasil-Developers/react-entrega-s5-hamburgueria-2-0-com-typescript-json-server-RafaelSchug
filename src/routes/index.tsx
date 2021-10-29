@@ -1,4 +1,6 @@
 import { Switch, Route, useHistory } from "react-router-dom";
+import Login from "../pages/login";
+import Register from "../pages/register";
 
 const Routes = () => {
   const history = useHistory();
@@ -9,10 +11,10 @@ const Routes = () => {
         Produtos
       </Route>
       <Route exact path="/login">
-        Login
+        <Login />
       </Route>
       <Route exact path="/register">
-        Register
+        <Register />
       </Route>
       <Route>{() => history.push("/")}</Route>
     </Switch>
