@@ -1,6 +1,6 @@
 import Banner from "../../components/Banner";
 import FormContainer from "../../components/FormContainer";
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import { MainContainer, ChildContainer } from "./styled";
 
 const Register = () => {
@@ -23,7 +23,6 @@ const Register = () => {
             label="Confirmar Senha"
             variant="outlined"
           />
-          <Button variant="contained">Cadastrar</Button>
         </FormContainer>
       </ChildContainer>
     </MainContainer>

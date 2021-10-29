@@ -1,4 +1,5 @@
 import { Switch, Route, useHistory } from "react-router-dom";
+import Dashboard from "../pages/dashboard";
 import Login from "../pages/login";
 import Register from "../pages/register";
 
@@ -8,7 +9,7 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/">
-        Produtos
+        <Dashboard />
       </Route>
       <Route exact path="/login">
         <Login />
