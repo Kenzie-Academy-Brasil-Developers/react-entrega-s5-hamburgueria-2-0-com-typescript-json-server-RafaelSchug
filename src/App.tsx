@@ -10,10 +10,25 @@ const theme = createTheme({
     secondary: {
       main: "#EB5757",
     },
+    text: {
+      secondary: "#27AE60",
+    },
+  },
+  typography: {
+    fontFamily: `"Inter", "Roboto", "sans-serif"`,
+    h3: {
+      fontSize: "18px",
+      fontWeight: "bold",
+    },
+    body1: {
+      fontSize: "14px",
+      fontWeight: 600,
+    },
   },
 });
 
 function App() {
+  console.log(theme);
   return (
     <div className="App">
       <ThemeProvider theme={theme}>

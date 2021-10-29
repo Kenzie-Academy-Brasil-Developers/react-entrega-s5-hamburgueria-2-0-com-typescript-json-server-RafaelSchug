@@ -31,14 +31,17 @@ const StyledCard = ({ title, category, price, image, id }: Types) => {
         />
       </div>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h3" component="div">
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {category}
         </Typography>
-        <Typography variant="body1" color="text.primary">
-          {price}
+        <Typography variant="body1" color="text.secondary">
+          {Number(price).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          })}
         </Typography>
       </CardContent>
       <CardActions>
