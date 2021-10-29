@@ -1,32 +1,52 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { useHistory } from "react-router-dom";
+import api from "../../services/api";
 
 interface dataSchema {
-  name: string;
   email: string;
   password: string;
-  passwordCheck: string;
-}
-
-interface AuthContextData {
-  login: (data: dataSchema) => void;
-  isAuth: boolean;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-const [isAuth, setIsAuth] = useState<boolean>(
-  !!localStorage.getItem("@token") || false
-);
+interface AuthContextData {
+  login: (data: dataSchema) => void;
+  logout: () => void;
+  isAuth: boolean;
+}
 
 interface Types {
   children: ReactNode;
 }
 
-const login = (data: dataSchema) => {};
-
 const AuthProvider = ({ children }: Types) => {
+  const [isAuth, setIsAuth] = useState<boolean>(
+    !!localStorage.getItem("@token") || false
+  );
+  const history = useHistory();
+  const login = (data: dataSchema) => {
+    api
+      .post("/users/signin/", data)
+      .then((response) => {
+        console.log(response);
+        localStorage.setItem("@token", response.data.accessToken);
+        localStorage.setItem("@user", response.data.user);
+        setIsAuth(true);
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const logout = () => {
+    localStorage.clear();
+    console.log("Logout");
+    setIsAuth(false);
+  };
+
   return (
-    <AuthContext.Provider value={{ login, isAuth }}>
+    <AuthContext.Provider value={{ login, isAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );

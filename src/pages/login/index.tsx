@@ -5,17 +5,21 @@ import { MainContainer, ChildContainer } from "./styled";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuth } from "../../providers/Auth";
+import { useHistory } from "react-router";
+import { useEffect } from "react";
 
 const Login = () => {
   interface dataSchema {
-    name: string;
     email: string;
     password: string;
-    passwordCheck: string;
   }
 
+  const { login, isAuth } = useAuth();
+  const history = useHistory();
+
   const schema = yup.object().shape({
-    name: yup.string().email("Email inválido").required("Campo obrigatório"),
+    email: yup.string().email("Email inválido").required("Campo obrigatório"),
     password: yup
       .string()
       .required("Campo obrigatório")
@@ -29,8 +33,14 @@ const Login = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = (data: dataSchema) => {
-    console.log(data);
+    login(data);
   };
+
+  // useEffect(() => {
+  //   if (isAuth) {
+  //     history.push("/");
+  //   }
+  // }, [isAuth]);
 
   console.log(errors);
 
@@ -48,7 +58,7 @@ const Login = () => {
             id="outlined-basic"
             label="Email"
             variant="outlined"
-            {...register("name")}
+            {...register("email")}
           />
           <TextField
             id="outlined-basic"

@@ -10,6 +10,22 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useAuth } from "../../providers/Auth";
+import { useHistory } from "react-router";
+import Modal from "@mui/material/Modal";
+import { useState } from "react";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+} as const;
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -51,41 +67,68 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 const Header = () => {
+  const { logout, isAuth } = useAuth();
+  const history = useHistory();
+  const [open, setOpen] = useState<boolean>(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ background: "#fff" }}>
-        <Toolbar>
-          <Logo />
-          <div style={{ flex: "1" }} />
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-          <IconButton
-            size="large"
-            aria-label="show 4 new mails"
-            color="inherit"
-          >
-            <Badge badgeContent={4} color="error">
-              <LocalMallIcon />
-            </Badge>
-          </IconButton>
-          <IconButton size="large" color="inherit">
-            <Badge>
-              <LogoutIcon />
-            </Badge>
-          </IconButton>
-          <Button variant="contained" style={{ color: "#fff" }}>
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}></Box>
+      </Modal>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" style={{ background: "#fff" }}>
+          <Toolbar>
+            <Logo />
+            <div style={{ flex: "1" }} />
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+            {isAuth && (
+              <>
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={handleOpen}
+                >
+                  <Badge badgeContent={4} color="error">
+                    <LocalMallIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton size="large" color="inherit" onClick={logout}>
+                  <Badge>
+                    <LogoutIcon />
+                  </Badge>
+                </IconButton>
+              </>
+            )}
+            {!isAuth && (
+              <Button
+                variant="contained"
+                style={{ color: "#fff" }}
+                onClick={() => history.push("/login")}
+              >
+                Login
+              </Button>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </>
   );
 };
 

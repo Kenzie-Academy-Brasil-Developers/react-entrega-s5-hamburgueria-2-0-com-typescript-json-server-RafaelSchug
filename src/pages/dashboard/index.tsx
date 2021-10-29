@@ -1,7 +1,15 @@
 import Header from "../../components/Header";
-import StyledCard from "../../components/Card";
+import Card from "../../components/Card";
+import { useAuth } from "../../providers/Auth";
+import { useEffect } from "react";
 
 const Dashboard = () => {
+  const { isAuth } = useAuth();
+
+  useEffect(() => {
+    console.log(isAuth);
+  }, []);
+
   return (
     <>
       <Header></Header>
@@ -16,8 +24,7 @@ const Dashboard = () => {
           padding: "50px",
         }}
       >
-        <StyledCard></StyledCard>
-        <StyledCard></StyledCard>
+        <Card></Card>
       </div>
     </>
   );
