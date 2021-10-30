@@ -15,6 +15,12 @@ import { useHistory } from "react-router";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useCart } from "../../providers/Cart";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Fab from "@mui/material/Fab";
+import { CardMedia, Container, Typography } from "@mui/material";
+import { CartCard } from "./style";
 
 const style = {
   position: "absolute",
@@ -25,7 +31,7 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  padding: "20px",
 } as const;
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -82,7 +88,53 @@ const Header = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>Content goes here</Box>
+        <Box sx={style}>
+          {cart.map((item, index) => {
+            return (
+              <CartCard key={index}>
+                <div className="image_content">
+                  <img src={item.image} alt="ilustration" />
+                </div>
+                <div className="item_information">
+                  <Typography variant="h3">{item.title}</Typography>
+                  <div className="item_control">
+                    <Fab
+                      size="small"
+                      color="primary"
+                      aria-label="add"
+                      style={{ color: "#fff" }}
+                    >
+                      <RemoveIcon />
+                    </Fab>
+                    <Typography variant="body2">2</Typography>
+                    <Fab
+                      size="small"
+                      color="primary"
+                      aria-label="add"
+                      style={{ color: "#fff" }}
+                    >
+                      <AddIcon />
+                    </Fab>
+                  </div>
+                </div>
+                <div className="button_content">
+                  <Button variant="text">Remover</Button>
+                </div>
+              </CartCard>
+            );
+          })}
+          <div
+            style={{
+              borderTop: "2px solid #ccc",
+              marginTop: "10px",
+              paddingTop: "10px",
+            }}
+          >
+            <Button variant="contained" sx={{ color: "#fff" }}>
+              Remover Todos
+            </Button>
+          </div>
+        </Box>
       </Modal>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" style={{ background: "#fff" }}>
