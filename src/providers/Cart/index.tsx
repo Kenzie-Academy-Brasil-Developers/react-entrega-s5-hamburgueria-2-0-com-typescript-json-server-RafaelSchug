@@ -34,7 +34,7 @@ interface CartContextTypes {
 }
 
 const CartProvider = ({ children }: Types) => {
-  const { token } = useAuth();
+  const { token, setIsAuth } = useAuth();
   const { products } = useProducts();
   const [cart, setCart] = useState<CartSchema[]>([] as CartSchema[]);
   const localStorageData: string = localStorage.getItem("@user") || "";
@@ -42,12 +42,17 @@ const CartProvider = ({ children }: Types) => {
 
   const addProductToCart = (productId: number) => {
     const product = products.find((item) => item.id === productId);
-    const isProductInCart = cart.some((item) => item.id === productId);
+    const isProductInCart = cart.some((item) => item.title === product?.title);
     if (!isProductInCart) {
       api
         .post(
           `/cart/`,
-          { ...product, quantity: 1, userId: userId },
+          {
+            ...product,
+            quantity: 1,
+            userId: userId,
+            id: null,
+          },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -66,8 +71,12 @@ const CartProvider = ({ children }: Types) => {
         const responseProducts = response.data;
         console.log(response);
         setCart(responseProducts);
+      })
+      .catch(() => {
+        localStorage.clear();
+        setIsAuth(false);
       });
-    console.log("chamouFuncao");
+    console.log("%c CARREGOU", "font-size: 20px; color: blue;");
   };
 
   const removeProductFromCart = (id: number) => {
@@ -114,7 +123,7 @@ const CartProvider = ({ children }: Types) => {
       setUserId(JSON.parse(localStorageData).id);
       getCartList();
     }
-  }, [token]);
+  }, [token, userId]);
 
   console.log(cart);
 

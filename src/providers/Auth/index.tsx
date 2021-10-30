@@ -14,6 +14,7 @@ interface AuthContextData {
   logout: () => void;
   isAuth: boolean;
   token: string;
+  setIsAuth: (data: boolean) => void;
 }
 
 interface Types {
@@ -35,8 +36,9 @@ const AuthProvider = ({ children }: Types) => {
       .then((response) => {
         console.log(response);
         const responseToken = response.data.accessToken;
+        const responseUser = response.data.user;
         localStorage.setItem("@token", responseToken);
-        localStorage.setItem("@user", JSON.stringify(response.data.user));
+        localStorage.setItem("@user", JSON.stringify(responseUser));
         setToken(responseToken);
         setIsAuth(true);
         history.push("/");
@@ -53,7 +55,7 @@ const AuthProvider = ({ children }: Types) => {
   };
 
   return (
-    <AuthContext.Provider value={{ login, isAuth, logout, token }}>
+    <AuthContext.Provider value={{ login, isAuth, logout, token, setIsAuth }}>
       {children}
     </AuthContext.Provider>
   );

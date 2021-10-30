@@ -1,4 +1,34 @@
 import styled from 'styled-components';
+import { styled as styledMUI }  from '@mui/system';
+import Box from '@mui/material/Box';
+
+
+export const StyledBox = styledMUI(Box)`
+
+    overflow: hidden;
+    border-radius: 5px;
+    border: unset;
+
+    .box_header {
+        width: 100%;
+        height: 40px;
+        background: #27AE60;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+
+        span {
+            cursor: pointer;
+        }
+    }
+
+    .box_body {
+        padding: 20px;
+        background: #fff;
+    }
+`
 
 export const CartCard = styled.div`
     display: flex;
@@ -41,5 +71,24 @@ export const CartCard = styled.div`
         align-self: flex-start;
     }
 
+`
+
+export const EmptyCart = styled.div`
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 10px;
+
+    h3 {
+        font-family: 'Inter';
+    }
+
+    p {
+        font-family: 'Inter';
+        font-weight: 300;
+    }
 
 `
