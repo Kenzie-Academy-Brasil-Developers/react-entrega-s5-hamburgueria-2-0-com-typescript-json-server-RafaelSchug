@@ -73,7 +73,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 const Header = () => {
-  const { cart } = useCart();
+  const {
+    cart,
+    removeProductFromCart,
+    increaseProductQuantity,
+    decreaseProductQuantity,
+  } = useCart();
   const { logout, isAuth } = useAuth();
   const history = useHistory();
   const [open, setOpen] = useState<boolean>(false);
@@ -103,22 +108,29 @@ const Header = () => {
                       color="primary"
                       aria-label="add"
                       style={{ color: "#fff" }}
+                      onClick={() => decreaseProductQuantity(item.id)}
                     >
                       <RemoveIcon />
                     </Fab>
-                    <Typography variant="body2">2</Typography>
+                    <Typography variant="body2">{item.quantity}</Typography>
                     <Fab
                       size="small"
                       color="primary"
                       aria-label="add"
                       style={{ color: "#fff" }}
+                      onClick={() => increaseProductQuantity(item.id)}
                     >
                       <AddIcon />
                     </Fab>
                   </div>
                 </div>
                 <div className="button_content">
-                  <Button variant="text">Remover</Button>
+                  <Button
+                    variant="text"
+                    onClick={() => removeProductFromCart(item.id)}
+                  >
+                    Remover
+                  </Button>
                 </div>
               </CartCard>
             );

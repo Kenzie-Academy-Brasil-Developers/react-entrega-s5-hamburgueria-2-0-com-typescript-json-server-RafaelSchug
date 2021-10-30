@@ -5,17 +5,29 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { StyledMUICard } from "./style";
 import { useAuth } from "../../providers/Auth";
+import { useCart } from "../../providers/Cart";
 
-interface Types {
-  title?: string;
-  category?: string;
-  price?: number;
-  image?: string;
-  id?: number;
+interface CartSchema {
+  title: string;
+  image: string;
+  category: string;
+  price: number;
+  userId?: number;
+  id: number;
+  quantity?: number;
 }
 
-const StyledCard = ({ title, category, price, image, id }: Types) => {
+const StyledCard = ({
+  title,
+  category,
+  price,
+  image,
+  id,
+  quantity,
+  userId,
+}: CartSchema) => {
   const { isAuth } = useAuth();
+  const { addProductToCart } = useCart();
   return (
     <StyledMUICard>
       <div className="ProductCardHeader">
@@ -53,7 +65,12 @@ const StyledCard = ({ title, category, price, image, id }: Types) => {
           })}
         </Typography>
         {isAuth && (
-          <Button size="small" variant="contained" sx={{ color: "#fff" }}>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ color: "#fff" }}
+            onClick={() => addProductToCart(id)}
+          >
             Adicionar
           </Button>
         )}

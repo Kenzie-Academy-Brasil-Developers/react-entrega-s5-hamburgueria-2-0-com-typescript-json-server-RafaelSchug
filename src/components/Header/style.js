@@ -19,6 +19,7 @@ export const CartCard = styled.div`
         img {
             width: 60px;
             height: 100%;
+            object-fit: contain;
         }
     }
 

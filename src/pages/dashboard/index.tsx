@@ -35,6 +35,7 @@ const Dashboard = () => {
               image={item.image}
               price={item.price}
               category={item.category}
+              id={item.id}
             ></Card>
           );
         })}
