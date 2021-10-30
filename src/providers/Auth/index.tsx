@@ -30,7 +30,7 @@ const AuthProvider = ({ children }: Types) => {
       .then((response) => {
         console.log(response);
         localStorage.setItem("@token", response.data.accessToken);
-        localStorage.setItem("@user", response.data.user);
+        localStorage.setItem("@user", JSON.stringify(response.data.user));
         setIsAuth(true);
         history.push("/");
       })

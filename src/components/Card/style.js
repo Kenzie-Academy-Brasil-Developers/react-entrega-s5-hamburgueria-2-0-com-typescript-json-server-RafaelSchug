@@ -13,7 +13,7 @@ export const StyledMUICard = styled(Card)`
     min-width: 230px;
     height: 340px;
 
-    .image_wrapper {
+    .ProductCardHeader {
         width: 100%;
         height: 150px;
         background: #ececec;
@@ -22,6 +22,18 @@ export const StyledMUICard = styled(Card)`
         align-items: center;
 
     }
+    .ProductCardMain {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        flex: 1;
+        padding: 10px 20px;
+        
+    }
+
+    
 
 
 `

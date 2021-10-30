@@ -18,7 +18,7 @@ const StyledCard = ({ title, category, price, image, id }: Types) => {
   const { isAuth } = useAuth();
   return (
     <StyledMUICard>
-      <div className="image_wrapper">
+      <div className="ProductCardHeader">
         <CardMedia
           component="img"
           image={image}
@@ -30,11 +30,20 @@ const StyledCard = ({ title, category, price, image, id }: Types) => {
           }}
         />
       </div>
-      <CardContent>
-        <Typography gutterBottom variant="h3" component="div">
+      <div className="ProductCardMain">
+        <Typography
+          gutterBottom
+          variant="h3"
+          component="div"
+          sx={{ marginBottom: 0 }}
+        >
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ color: "#828282" }}
+        >
           {category}
         </Typography>
         <Typography variant="body1" color="text.secondary">
@@ -43,14 +52,12 @@ const StyledCard = ({ title, category, price, image, id }: Types) => {
             currency: "BRL",
           })}
         </Typography>
-      </CardContent>
-      <CardActions>
         {isAuth && (
           <Button size="small" variant="contained" sx={{ color: "#fff" }}>
             Adicionar
           </Button>
         )}
-      </CardActions>
+      </div>
     </StyledMUICard>
   );
 };
