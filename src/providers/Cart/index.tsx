@@ -1,3 +1,4 @@
+import { promises } from "fs";
 import {
   createContext,
   useContext,
@@ -43,37 +44,8 @@ const CartProvider = ({ children }: Types) => {
   const localStorageData: string = localStorage.getItem("@user") || "";
   const [userId, setUserId] = useState<number>();
 
-  const addProductToCart = (productId: number) => {
-    const product = products.find((item) => item.id === productId);
-    const isProductInCart = cart.some((item) => item.title === product?.title);
-    if (!isProductInCart) {
-      api
-        .post(
-          `/cart/`,
-          {
-            ...product,
-            quantity: 1,
-            userId: userId,
-            id: null,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
-        .then(() => {
-          getCartList();
-          toast.success("Produto adicionado ao carrinho");
-        })
-        .catch(() => {
-          toast.error("Erro ao adicionar produto");
-        });
-    } else {
-      toast.info("Produto já incluso - Altere a quantidade em seu carrinho", {
-        autoClose: 2500,
-        toastId: `${productId}`,
-      });
-    }
-  };
+  // state para impedir de clicar em adicionar itens enquanto uma requisição estiver pendente
+  const [awaitingRequest, setAwaitingRequest] = useState<boolean>(false);
 
   const getCartList = () => {
     api
@@ -83,38 +55,110 @@ const CartProvider = ({ children }: Types) => {
       .then((response) => {
         const responseProducts = response.data;
         setCart(responseProducts);
+        setAwaitingRequest(false);
       })
       .catch(() => {
         localStorage.clear();
+        setAwaitingRequest(false);
         setIsAuth(false);
       });
   };
 
-  const removeProductFromCart = (id: number) => {
-    api
-      .delete(`/cart/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => getCartList())
-      .catch(() => {
-        toast.error("Erro ao remover produto");
+  const addProductToCart = (productId: number) => {
+    const product = products.find((item) => item.id === productId);
+    const isProductInCart = cart.some((item) => item.title === product?.title);
+
+    if (!isProductInCart && !awaitingRequest) {
+      setAwaitingRequest(true);
+      const wait = new Promise((response, fail) => {
+        api
+          .post(
+            `/cart/`,
+            {
+              ...product,
+              quantity: 1,
+              userId: userId,
+              id: null,
+            },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
+          .then(() => {
+            response(true);
+            getCartList();
+          })
+          .catch(fail);
       });
+
+      toast.promise(
+        wait,
+        {
+          success: "Produto adicionado ao carrinho",
+          pending: "Adicionando ao carrinho...",
+          error: "Erro ao adicionar produto",
+        },
+        { autoClose: 500 }
+      );
+    } else {
+      toast.info("Produto já incluso - Altere a quantidade em seu carrinho", {
+        autoClose: 2000,
+        toastId: `${productId}`,
+      });
+    }
+  };
+
+  const removeProductFromCart = (id: number) => {
+    const wait = new Promise((response, fail) => {
+      api
+        .delete(`/cart/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          response(true);
+          getCartList();
+        })
+        .catch(fail);
+    });
+
+    toast.promise(
+      wait,
+      {
+        success: "Produto removido",
+        pending: "Removendo produto",
+        error: "Falha ao remover produto",
+      },
+      { autoClose: 300 }
+    );
   };
 
   const increaseProductQuantity = (id: number) => {
     const newQuantity: number =
       Number(cart.find((item) => item.id === id)?.quantity) + 1;
 
-    api
-      .patch(
-        `/cart/${id}`,
-        { quantity: newQuantity },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then(() => getCartList())
-      .catch(() => {
-        toast.error("Erro ao adicionar produto");
-      });
+    const wait = new Promise((response, fail) => {
+      api
+        .patch(
+          `/cart/${id}`,
+          { quantity: newQuantity },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then(() => {
+          getCartList();
+          response(true);
+        })
+        .catch(fail);
+    });
+
+    toast.promise(
+      wait,
+      {
+        success: "Produto adicionado",
+        pending: "Adicionando produto",
+        error: "Falha ao adicionar produto",
+      },
+      { autoClose: 300 }
+    );
   };
 
   const decreaseProductQuantity = (id: number) => {
@@ -122,32 +166,54 @@ const CartProvider = ({ children }: Types) => {
       Number(cart.find((item) => item.id === id)?.quantity) - 1;
 
     if (newQuantity) {
-      api
-        .patch(
-          `/cart/${id}`,
-          { quantity: newQuantity },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-        .then(() => getCartList())
-        .catch(() => {
-          toast.error("Erro ao remover produto");
-        });
+      const wait = new Promise((response, fail) => {
+        api
+          .patch(
+            `/cart/${id}`,
+            { quantity: newQuantity },
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
+          .then(() => {
+            getCartList();
+            response(true);
+          })
+          .catch(fail);
+      });
+
+      toast.promise(
+        wait,
+        {
+          success: "Produto removido",
+          pending: "Removendo produto",
+          error: "Falha ao remover produto",
+        },
+        { autoClose: 300 }
+      );
     }
   };
 
   const removeAllProductsFromCart = () => {
-    cart.forEach((item) => {
-      api
-        .delete(`cart/${item.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-          getCartList();
-        })
-        .catch(() => {
-          toast.error("Erro ao remover produtos");
-        });
-    });
+    const wait = Promise.all(
+      cart.map(async (item) => {
+        await api
+          .delete(`cart/${item.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(() => {
+            getCartList();
+          });
+      })
+    );
+
+    toast.promise(
+      wait,
+      {
+        success: "Produtos removidos",
+        pending: "Removendo produtos",
+        error: "Falha ao remover produtos",
+      },
+      { autoClose: 300 }
+    );
   };
 
   useEffect(() => {
