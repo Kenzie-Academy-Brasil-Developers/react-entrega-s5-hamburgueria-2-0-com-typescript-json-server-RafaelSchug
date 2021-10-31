@@ -1,8 +1,7 @@
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import Logo from "../logo";
+import Logo from "../Logo";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
@@ -214,7 +213,10 @@ const Header = () => {
                 onClick={handleOpen}
               >
                 <Badge
-                  badgeContent={cart.reduce((acc) => acc + 1, 0)}
+                  badgeContent={cart.reduce(
+                    (acc, item) => acc + item.quantity,
+                    0
+                  )}
                   color="error"
                 >
                   <LocalMallIcon />

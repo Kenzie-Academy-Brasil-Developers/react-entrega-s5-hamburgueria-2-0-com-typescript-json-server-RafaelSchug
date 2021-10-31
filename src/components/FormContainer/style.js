@@ -5,7 +5,7 @@ export const BoxStyled = styled(Box)`
     
     width: 100%;
     max-width: 400px;
-    min-width: 260px;
+    min-width: 230px;
     display: flex;
     flex-direction: column;
     align-items: center;
