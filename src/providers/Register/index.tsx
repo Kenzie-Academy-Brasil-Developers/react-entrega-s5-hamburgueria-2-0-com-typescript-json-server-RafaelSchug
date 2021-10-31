@@ -34,7 +34,7 @@ const RegisterProvider = ({ children }: Types) => {
         .then(() => {
           setTimeout(() => {
             login({ email, password });
-          }, 3000);
+          }, 2500);
           response(true);
         })
         .catch(fail);

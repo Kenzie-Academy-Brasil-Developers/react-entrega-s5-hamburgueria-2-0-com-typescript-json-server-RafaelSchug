@@ -63,7 +63,6 @@ const Register = () => {
             <Link to="/login">Retornar para login</Link>
           </div>
           <TextField
-            id="outlined-basic"
             label="Nome"
             variant="outlined"
             {...register("name")}
@@ -71,7 +70,6 @@ const Register = () => {
             helperText={errors.name?.message}
           />
           <TextField
-            id="outlined-basic"
             label="Email"
             variant="outlined"
             {...register("email")}
@@ -79,20 +77,20 @@ const Register = () => {
             helperText={errors.email?.message}
           />
           <TextField
-            id="outlined-basic"
             label="Senha"
             variant="outlined"
             {...register("password")}
             error={!!errors.password}
             helperText={errors.password?.message}
+            type="password"
           />
           <TextField
-            id="outlined-basic"
             label="Confirmar Senha"
             variant="outlined"
             {...register("passwordCheck")}
             error={!!errors.passwordCheck}
             helperText={errors.passwordCheck?.message}
+            type="password"
           />
           <Button type="submit" variant="contained">
             Cadastrar
