@@ -116,7 +116,7 @@ const CartProvider = ({ children }: Types) => {
         })
         .then(() => {
           response(true);
-          getCartList();
+          setCart(cart.filter((item) => item.id !== id));
         })
         .catch(fail);
     });
@@ -144,7 +144,11 @@ const CartProvider = ({ children }: Types) => {
           { headers: { Authorization: `Bearer ${token}` } }
         )
         .then(() => {
-          getCartList();
+          setCart(
+            cart.map((item) =>
+              item.id === id ? { ...item, quantity: newQuantity } : item
+            )
+          );
           response(true);
         })
         .catch(fail);
@@ -157,7 +161,7 @@ const CartProvider = ({ children }: Types) => {
         pending: "Adicionando produto",
         error: "Falha ao adicionar produto",
       },
-      { autoClose: 300 }
+      { autoClose: 350 }
     );
   };
 
@@ -174,7 +178,11 @@ const CartProvider = ({ children }: Types) => {
             { headers: { Authorization: `Bearer ${token}` } }
           )
           .then(() => {
-            getCartList();
+            setCart(
+              cart.map((item) =>
+                item.id === id ? { ...item, quantity: newQuantity } : item
+              )
+            );
             response(true);
           })
           .catch(fail);
@@ -187,7 +195,7 @@ const CartProvider = ({ children }: Types) => {
           pending: "Removendo produto",
           error: "Falha ao remover produto",
         },
-        { autoClose: 300 }
+        { autoClose: 350 }
       );
     }
   };
@@ -200,7 +208,7 @@ const CartProvider = ({ children }: Types) => {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {
-            getCartList();
+            setCart([]);
           });
       })
     );
@@ -212,7 +220,7 @@ const CartProvider = ({ children }: Types) => {
         pending: "Removendo produtos",
         error: "Falha ao remover produtos",
       },
-      { autoClose: 300 }
+      { autoClose: 350 }
     );
   };
 
