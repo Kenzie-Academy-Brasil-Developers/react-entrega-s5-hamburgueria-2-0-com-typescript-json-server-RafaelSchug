@@ -1,11 +1,13 @@
 import { Container } from "./style";
 import { FiShoppingBag } from "react-icons/fi";
 import LogoImg from "../../assets/images/logomed.png";
+import { useHistory } from "react-router";
 
 const Banner = () => {
+  const history = useHistory();
   return (
     <Container>
-      <div className="logo">
+      <div className="logo" onClick={() => history.push("/")}>
         <img src={LogoImg} alt="logo" />
       </div>
       <div className="content_container">

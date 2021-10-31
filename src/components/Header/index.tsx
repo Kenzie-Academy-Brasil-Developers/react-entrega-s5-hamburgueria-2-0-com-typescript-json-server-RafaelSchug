@@ -1,27 +1,36 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import Logo from "../Logo";
-import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth } from "../../providers/Auth";
 import { useHistory } from "react-router";
-import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useCart } from "../../providers/Cart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Fab from "@mui/material/Fab";
 import { Typography } from "@mui/material";
-import { CartCard, EmptyCart, StyledBox, TotalContainer } from "./style";
+import {
+  CartCard,
+  EmptyCart,
+  StyledBox,
+  TotalContainer,
+  SearchIconWrapper,
+  Search,
+  StyledInputBase,
+} from "./style";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useProducts } from "../../providers/Products";
+
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  IconButton,
+  Badge,
+  Modal,
+  Fab,
+} from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -31,44 +40,6 @@ const style = {
   boxShadow: 24,
 } as const;
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
 const Header = () => {
   const {
     cart,
@@ -77,6 +48,7 @@ const Header = () => {
     decreaseProductQuantity,
     removeAllProductsFromCart,
   } = useCart();
+  const { filterProductsByName } = useProducts();
   const { logout, isAuth, userName } = useAuth();
   const history = useHistory();
   const [open, setOpen] = useState<boolean>(false);
@@ -205,6 +177,7 @@ const Header = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => filterProductsByName(e.target.value)}
             />
           </Search>
           {isAuth && (

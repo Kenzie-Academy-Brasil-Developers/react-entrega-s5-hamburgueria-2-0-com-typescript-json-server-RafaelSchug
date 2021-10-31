@@ -28,6 +28,7 @@ interface CartSchema {
 
 interface CartContextTypes {
   cart: CartSchema[];
+
   addProductToCart: (productId: number) => void;
   removeProductFromCart: (id: number) => void;
   increaseProductQuantity: (id: number) => void;
@@ -81,14 +82,12 @@ const CartProvider = ({ children }: Types) => {
       })
       .then((response) => {
         const responseProducts = response.data;
-        console.log(response);
         setCart(responseProducts);
       })
       .catch(() => {
         localStorage.clear();
         setIsAuth(false);
       });
-    console.log("%c CARREGOU", "font-size: 20px; color: blue;");
   };
 
   const removeProductFromCart = (id: number) => {
@@ -97,7 +96,9 @@ const CartProvider = ({ children }: Types) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => getCartList())
-      .catch((error) => console.log(error));
+      .catch(() => {
+        toast.error("Erro ao remover produto");
+      });
   };
 
   const increaseProductQuantity = (id: number) => {
@@ -111,7 +112,9 @@ const CartProvider = ({ children }: Types) => {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => getCartList())
-      .catch((error) => console.log(error));
+      .catch(() => {
+        toast.error("Erro ao adicionar produto");
+      });
   };
 
   const decreaseProductQuantity = (id: number) => {
@@ -126,7 +129,9 @@ const CartProvider = ({ children }: Types) => {
           { headers: { Authorization: `Bearer ${token}` } }
         )
         .then(() => getCartList())
-        .catch((error) => console.log(error));
+        .catch(() => {
+          toast.error("Erro ao remover produto");
+        });
     }
   };
 
@@ -139,7 +144,9 @@ const CartProvider = ({ children }: Types) => {
         .then((res) => {
           getCartList();
         })
-        .catch((error) => console.log(error));
+        .catch(() => {
+          toast.error("Erro ao remover produtos");
+        });
     });
   };
 
@@ -149,8 +156,6 @@ const CartProvider = ({ children }: Types) => {
       getCartList();
     }
   }, [token, userId]);
-
-  console.log(cart);
 
   return (
     <CartContext.Provider

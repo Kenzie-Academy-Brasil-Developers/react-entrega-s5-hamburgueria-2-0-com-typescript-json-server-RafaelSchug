@@ -28,13 +28,16 @@ const RegisterProvider = ({ children }: Types) => {
   const registerNewUser = (data: RegisterData) => {
     console.log("Receiving this data:", data);
     const { name, email, password } = data;
-    const wait = new Promise((response) => {
-      api.post("/users/register/", { name, email, password }).then(() => {
-        setTimeout(() => {
-          login({ email, password });
-        }, 3000);
-        response(true);
-      });
+    const wait = new Promise((response, fail) => {
+      api
+        .post("/users/register/", { name, email, password })
+        .then(() => {
+          setTimeout(() => {
+            login({ email, password });
+          }, 3000);
+          response(true);
+        })
+        .catch(fail);
     });
     toast.promise(
       wait,
@@ -43,7 +46,7 @@ const RegisterProvider = ({ children }: Types) => {
         success: "Registro efetuado com sucesso! Efetuando login automático...",
         error: "Email já utilizado",
       },
-      { autoClose: 3000, hideProgressBar: false }
+      { autoClose: 2000 }
     );
   };
 

@@ -13,10 +13,17 @@ export const Container = styled.div`
     .logo {
         display: flex;
         justify-content: flex-start;
+        cursor: pointer;
+        transition: .2s linear;
+        :hover {
+            filter: saturate(3.5);
+            transform: scale(1.05);
+        }
         
         img {
             width:100%;
         }
+
     }
 
     .content_container {

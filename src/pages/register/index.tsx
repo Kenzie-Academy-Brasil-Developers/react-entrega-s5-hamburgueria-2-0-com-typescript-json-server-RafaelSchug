@@ -3,12 +3,13 @@ import FormContainer from "../../components/FormContainer";
 import { TextField } from "@mui/material";
 import { MainContainer, ChildContainer } from "./styled";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRegister } from "../../providers/Register";
-import api from "../../services/api";
+import { useAuth } from "../../providers/Auth";
+import { useEffect } from "react";
 
 interface dataSchema {
   name: string;
@@ -18,6 +19,15 @@ interface dataSchema {
 }
 
 const Register = () => {
+  const { isAuth } = useAuth();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isAuth) {
+      history.push("/");
+    }
+  }, [isAuth]);
+
   const { registerNewUser } = useRegister();
   const schema = yup.object().shape({
     name: yup.string().required("Campo obrigatório"),

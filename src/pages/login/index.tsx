@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../../providers/Auth";
 import { useHistory } from "react-router";
+import { useEffect } from "react";
 
 const Login = () => {
   interface dataSchema {
@@ -35,13 +36,11 @@ const Login = () => {
     login(data);
   };
 
-  // useEffect(() => {
-  //   if (isAuth) {
-  //     history.push("/");
-  //   }
-  // }, [isAuth]);
-
-  console.log(errors);
+  useEffect(() => {
+    if (isAuth) {
+      history.push("/");
+    }
+  }, [isAuth]);
 
   return (
     <MainContainer>
@@ -54,7 +53,6 @@ const Login = () => {
             <h3>Login</h3>
           </div>
           <TextField
-            id="outlined-basic"
             label="Email"
             variant="outlined"
             {...register("email")}
@@ -62,12 +60,12 @@ const Login = () => {
             helperText={errors.email?.message}
           />
           <TextField
-            id="outlined-basic"
             label="Senha"
             variant="outlined"
             {...register("password")}
             error={!!errors.password}
             helperText={errors.password?.message}
+            type="password"
           />
           <Button type="submit" variant="contained">
             Logar

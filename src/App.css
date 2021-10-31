@@ -7,15 +7,15 @@
   background: #27ae60;
 }
 
-.Toastify__toast.Toastify__toast-theme--colored.Toastify__toast--promise {
-  background: #27ae60;
-  color: #fff;
-}
-
 .Toastify__toast.Toastify__toast-theme--colored.Toastify__toast--error {
   background: #eb5757;
 }
 
 .Toastify__toast.Toastify__toast-theme--colored.Toastify__toast--info {
   background: #155bcb;
+}
+
+.Toastify__toast.Toastify__toast-theme--colored.Toastify__toast--default {
+  background: #27ae60;
+  color: #fff;
 }

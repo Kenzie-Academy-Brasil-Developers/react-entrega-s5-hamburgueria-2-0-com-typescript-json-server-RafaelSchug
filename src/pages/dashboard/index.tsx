@@ -1,18 +1,9 @@
 import Header from "../../components/Header";
 import Card from "../../components/Card";
-import { useAuth } from "../../providers/Auth";
-import { useEffect } from "react";
 import { useProducts } from "../../providers/Products";
-import { toast } from "react-toastify";
 
 const Dashboard = () => {
-  const { isAuth } = useAuth();
-  const { products } = useProducts();
-
-  useEffect(() => {
-    console.log(isAuth);
-    console.log(products);
-  }, []);
+  const { filteredProducts } = useProducts();
 
   return (
     <>
@@ -31,7 +22,7 @@ const Dashboard = () => {
           margin: "auto",
         }}
       >
-        {products.map((item, index) => {
+        {filteredProducts.map((item, index) => {
           return (
             <Card
               key={index}

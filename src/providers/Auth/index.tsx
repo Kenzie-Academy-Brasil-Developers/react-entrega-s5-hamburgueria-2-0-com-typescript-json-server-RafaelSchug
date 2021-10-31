@@ -38,28 +38,30 @@ const AuthProvider = ({ children }: Types) => {
   const history = useHistory();
 
   const login = (data: dataSchema) => {
-    const wait = new Promise((response) => {
-      api.post("/users/signin/", data).then((res) => {
-        console.log(res);
-        const responseToken = res.data.accessToken;
-        const responseUser = res.data.user;
-        const responseUserName = res.data.user.name;
-        localStorage.setItem("@token", responseToken);
-        localStorage.setItem("@user", JSON.stringify(responseUser));
-        localStorage.setItem("@userName", responseUserName);
-        setToken(responseToken);
-        setUsername(responseUserName);
-        setIsAuth(true);
-        history.push("/");
-        response(res);
-      });
+    const wait = new Promise((success, fail) => {
+      api
+        .post("/users/signin/", data)
+        .then((res) => {
+          const responseToken = res.data.accessToken;
+          const responseUser = res.data.user;
+          const responseUserName = res.data.user.name;
+          localStorage.setItem("@token", responseToken);
+          localStorage.setItem("@user", JSON.stringify(responseUser));
+          localStorage.setItem("@userName", responseUserName);
+          setToken(responseToken);
+          setUsername(responseUserName);
+          setIsAuth(true);
+          history.push("/");
+          success(true);
+        })
+        .catch(fail);
     });
     toast.promise(
       wait,
       {
-        pending: "Efetuando login",
+        pending: "Efetuando login...",
         success: `Login efetuado com sucesso`,
-        error: "Falha ao efetuar login",
+        error: "Credenciais incorretas",
       },
       { autoClose: 2000 }
     );
@@ -67,7 +69,6 @@ const AuthProvider = ({ children }: Types) => {
 
   const logout = () => {
     localStorage.clear();
-    console.log("Logout");
     setIsAuth(false);
     toast.success("Logout efetuado com sucesso");
   };
