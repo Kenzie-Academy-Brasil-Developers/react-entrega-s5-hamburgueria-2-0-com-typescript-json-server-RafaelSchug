@@ -25,6 +25,8 @@ const Dashboard = () => {
           alignItems: "flex-start",
           gap: "20px",
           padding: "50px",
+          maxWidth: "1400px",
+          margin: "auto",
         }}
       >
         {products.map((item, index) => {
@@ -36,6 +38,7 @@ const Dashboard = () => {
               price={item.price}
               category={item.category}
               id={item.id}
+              quantity={1}
             ></Card>
           );
         })}

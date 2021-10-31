@@ -22,7 +22,7 @@ interface CartSchema {
   price: number;
   userId?: number;
   id: number;
-  quantity?: number;
+  quantity: number;
 }
 
 interface CartContextTypes {
@@ -31,6 +31,7 @@ interface CartContextTypes {
   removeProductFromCart: (id: number) => void;
   increaseProductQuantity: (id: number) => void;
   decreaseProductQuantity: (id: number) => void;
+  removeAllProductsFromCart: () => void;
 }
 
 const CartProvider = ({ children }: Types) => {
@@ -118,6 +119,19 @@ const CartProvider = ({ children }: Types) => {
     }
   };
 
+  const removeAllProductsFromCart = () => {
+    cart.forEach((item) => {
+      api
+        .delete(`cart/${item.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          getCartList();
+        })
+        .catch((error) => console.log(error));
+    });
+  };
+
   useEffect(() => {
     if (token) {
       setUserId(JSON.parse(localStorageData).id);
@@ -135,6 +149,7 @@ const CartProvider = ({ children }: Types) => {
         removeProductFromCart,
         increaseProductQuantity,
         decreaseProductQuantity,
+        removeAllProductsFromCart,
       }}
     >
       {children}

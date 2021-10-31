@@ -3,7 +3,7 @@ import {Card} from '@mui/material'
 
 export const StyledMUICard = styled(Card)`
 
-    border: 2px solid #c6c6c6;
+    border: 2px solid #E0E0E0;
     box-shadow: unset;
     display: flex;
     flex-direction: column;

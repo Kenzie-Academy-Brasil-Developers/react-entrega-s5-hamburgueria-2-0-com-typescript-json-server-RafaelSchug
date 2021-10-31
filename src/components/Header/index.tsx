@@ -19,16 +19,16 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Fab from "@mui/material/Fab";
-import { CardMedia, Container, Typography } from "@mui/material";
-import { CartCard, EmptyCart, StyledBox } from "./style";
+import { Typography } from "@mui/material";
+import { CartCard, EmptyCart, StyledBox, TotalContainer } from "./style";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const style = {
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
+  maxWidth: 400,
+  width: "calc(100% - 20px)",
+  margin: "0 auto",
   boxShadow: 24,
 } as const;
 
@@ -76,6 +76,7 @@ const Header = () => {
     removeProductFromCart,
     increaseProductQuantity,
     decreaseProductQuantity,
+    removeAllProductsFromCart,
   } = useCart();
   const { logout, isAuth } = useAuth();
   const history = useHistory();
@@ -90,6 +91,11 @@ const Header = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <StyledBox sx={style}>
           <div className="box_header">
@@ -98,117 +104,140 @@ const Header = () => {
               <CloseIcon />
             </span>
           </div>
-          <div className="box_body">
-            {cart.map((item, index) => {
-              return (
-                <CartCard key={index}>
-                  <div className="image_content">
-                    <img src={item.image} alt="ilustration" />
-                  </div>
-                  <div className="item_information">
-                    <Typography variant="h3">{item.title}</Typography>
-                    <div className="item_control">
-                      <Fab
-                        size="small"
-                        color="primary"
-                        aria-label="add"
-                        style={{ color: "#fff" }}
-                        onClick={() => decreaseProductQuantity(item.id)}
-                      >
-                        <RemoveIcon />
-                      </Fab>
-                      <Typography variant="body2">{item.quantity}</Typography>
-                      <Fab
-                        size="small"
-                        color="primary"
-                        aria-label="add"
-                        style={{ color: "#fff" }}
-                        onClick={() => increaseProductQuantity(item.id)}
-                      >
-                        <AddIcon />
-                      </Fab>
-                    </div>
-                  </div>
-                  <div className="button_content">
-                    <Button
-                      variant="text"
-                      onClick={() => removeProductFromCart(item.id)}
-                    >
-                      Remover
-                    </Button>
-                  </div>
-                </CartCard>
-              );
-            })}
-            {cart.length ? (
+
+          {cart.length ? (
+            <>
+              <div className="box_body">
+                {cart.map((item, index) => {
+                  return (
+                    <CartCard key={index}>
+                      <div className="image_content">
+                        <img src={item.image} alt="ilustration" />
+                      </div>
+                      <div className="item_information">
+                        <Typography variant="h3">{item.title}</Typography>
+                        <div className="item_control">
+                          <Fab
+                            size="small"
+                            color="primary"
+                            aria-label="add"
+                            style={{ color: "#fff" }}
+                            onClick={() => decreaseProductQuantity(item.id)}
+                          >
+                            <RemoveIcon />
+                          </Fab>
+                          <Typography variant="body2">
+                            {item.quantity}
+                          </Typography>
+                          <Fab
+                            size="small"
+                            color="primary"
+                            aria-label="add"
+                            style={{ color: "#fff" }}
+                            onClick={() => increaseProductQuantity(item.id)}
+                          >
+                            <AddIcon />
+                          </Fab>
+                        </div>
+                      </div>
+                      <div className="button_content">
+                        <DeleteIcon
+                          onClick={() => removeProductFromCart(item.id)}
+                        />
+                      </div>
+                    </CartCard>
+                  );
+                })}
+              </div>
               <div
                 style={{
+                  padding: "20px 10px",
+                  background: "#fff",
                   borderTop: "2px solid #ccc",
-                  marginTop: "10px",
-                  paddingTop: "10px",
+                  width: "90%",
+                  margin: "auto",
                 }}
               >
-                <Button variant="contained" sx={{ color: "#fff" }}>
+                <TotalContainer>
+                  <h3>Total</h3>
+                  <h3>
+                    {cart
+                      .reduce(
+                        (acc, item) => acc + item.price * item.quantity,
+                        0
+                      )
+                      .toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                  </h3>
+                </TotalContainer>
+                <Button
+                  variant="contained"
+                  sx={{ color: "#fff" }}
+                  onClick={removeAllProductsFromCart}
+                >
                   Remover Todos
                 </Button>
               </div>
-            ) : (
-              <EmptyCart>
-                <h3>Sua sacola está vazia</h3>
-                <p>Adicione itens</p>
-              </EmptyCart>
-            )}
-          </div>
+            </>
+          ) : (
+            <EmptyCart>
+              <h3>Sua sacola está vazia</h3>
+              <p>Adicione itens</p>
+            </EmptyCart>
+          )}
         </StyledBox>
       </Modal>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{ background: "#fff" }}>
-          <Toolbar>
-            <Logo />
-            <div style={{ flex: "1" }} />
-            <Search sx={{ border: "1px solid #c3c3c3" }}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            {isAuth && (
-              <>
-                <IconButton
-                  size="large"
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                  onClick={handleOpen}
-                >
-                  <Badge
-                    badgeContent={cart.reduce((acc) => acc + 1, 0)}
-                    color="error"
-                  >
-                    <LocalMallIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton size="large" color="inherit" onClick={logout}>
-                  <Badge>
-                    <LogoutIcon />
-                  </Badge>
-                </IconButton>
-              </>
-            )}
-            {!isAuth && (
-              <Button
-                variant="contained"
-                style={{ color: "#fff" }}
-                onClick={() => history.push("/login")}
+      <AppBar
+        position="sticky"
+        style={{ background: "#F5F5F5", boxShadow: "0 0 1px 0px #4c4c4c" }}
+      >
+        <Toolbar>
+          <Logo />
+          <div style={{ flex: "1" }} />
+          <Search sx={{ border: "1px solid #c3c3c3" }}>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
+          {isAuth && (
+            <>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={handleOpen}
               >
-                Login
-              </Button>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
+                <Badge
+                  badgeContent={cart.reduce((acc) => acc + 1, 0)}
+                  color="error"
+                >
+                  <LocalMallIcon />
+                </Badge>
+              </IconButton>
+              <IconButton size="large" color="inherit" onClick={logout}>
+                <Badge>
+                  <LogoutIcon />
+                </Badge>
+              </IconButton>
+            </>
+          )}
+          {!isAuth && (
+            <Button
+              variant="contained"
+              style={{ color: "#fff" }}
+              onClick={() => history.push("/login")}
+            >
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
     </>
   );
 };

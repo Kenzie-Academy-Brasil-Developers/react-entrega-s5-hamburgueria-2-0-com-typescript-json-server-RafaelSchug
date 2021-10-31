@@ -1,5 +1,3 @@
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -14,18 +12,10 @@ interface CartSchema {
   price: number;
   userId?: number;
   id: number;
-  quantity?: number;
+  quantity: number;
 }
 
-const StyledCard = ({
-  title,
-  category,
-  price,
-  image,
-  id,
-  quantity,
-  userId,
-}: CartSchema) => {
+const StyledCard = ({ title, category, price, image, id }: CartSchema) => {
   const { isAuth } = useAuth();
   const { addProductToCart } = useCart();
   return (
