@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../../services/api";
 
 interface dataSchema {
@@ -14,6 +15,7 @@ interface AuthContextData {
   logout: () => void;
   isAuth: boolean;
   token: string;
+  userName: string;
   setIsAuth: (data: boolean) => void;
 }
 
@@ -29,33 +31,51 @@ const AuthProvider = ({ children }: Types) => {
     localStorage.getItem("@token") || ""
   );
 
+  const [userName, setUsername] = useState<string>(
+    localStorage.getItem("@userName") || ""
+  );
+
   const history = useHistory();
+
   const login = (data: dataSchema) => {
-    api
-      .post("/users/signin/", data)
-      .then((response) => {
-        console.log(response);
-        const responseToken = response.data.accessToken;
-        const responseUser = response.data.user;
+    const wait = new Promise((response) => {
+      api.post("/users/signin/", data).then((res) => {
+        console.log(res);
+        const responseToken = res.data.accessToken;
+        const responseUser = res.data.user;
+        const responseUserName = res.data.user.name;
         localStorage.setItem("@token", responseToken);
         localStorage.setItem("@user", JSON.stringify(responseUser));
+        localStorage.setItem("@userName", responseUserName);
         setToken(responseToken);
+        setUsername(responseUserName);
         setIsAuth(true);
         history.push("/");
-      })
-      .catch((error) => {
-        console.log(error);
+        response(res);
       });
+    });
+    toast.promise(
+      wait,
+      {
+        pending: "Efetuando login",
+        success: `Login efetuado com sucesso`,
+        error: "Falha ao efetuar login",
+      },
+      { autoClose: 2000 }
+    );
   };
 
   const logout = () => {
     localStorage.clear();
     console.log("Logout");
     setIsAuth(false);
+    toast.success("Logout efetuado com sucesso");
   };
 
   return (
-    <AuthContext.Provider value={{ login, isAuth, logout, token, setIsAuth }}>
+    <AuthContext.Provider
+      value={{ login, isAuth, logout, token, setIsAuth, userName }}
+    >
       {children}
     </AuthContext.Provider>
   );

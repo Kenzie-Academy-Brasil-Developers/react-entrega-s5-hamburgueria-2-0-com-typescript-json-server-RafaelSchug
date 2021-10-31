@@ -11,7 +11,7 @@ export const StyledBox = styledMUI(Box)`
 
     .box_header {
         width: 100%;
-        height: 54px;
+        min-height: 54px;
         background: #27AE60;
         color: #fff;
         display: flex;
@@ -23,6 +23,10 @@ export const StyledBox = styledMUI(Box)`
         
         span {
             cursor: pointer;
+        }
+
+        h4 span {
+            text-transform: capitalize;
         }
     }
 

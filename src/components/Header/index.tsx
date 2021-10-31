@@ -77,7 +77,7 @@ const Header = () => {
     decreaseProductQuantity,
     removeAllProductsFromCart,
   } = useCart();
-  const { logout, isAuth } = useAuth();
+  const { logout, isAuth, userName } = useAuth();
   const history = useHistory();
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
@@ -98,7 +98,9 @@ const Header = () => {
       >
         <StyledBox sx={style}>
           <div className="box_header">
-            <h4>Carrinho de compras</h4>
+            <h4>
+              Carrinho de compras de <span>{userName}</span>
+            </h4>
             <span onClick={handleClose}>
               <CloseIcon />
             </span>

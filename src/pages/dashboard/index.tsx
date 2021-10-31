@@ -3,6 +3,7 @@ import Card from "../../components/Card";
 import { useAuth } from "../../providers/Auth";
 import { useEffect } from "react";
 import { useProducts } from "../../providers/Products";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { isAuth } = useAuth();

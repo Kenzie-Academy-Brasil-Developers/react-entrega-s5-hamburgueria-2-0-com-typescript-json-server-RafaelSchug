@@ -7,7 +7,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../../providers/Auth";
 import { useHistory } from "react-router";
-import { useEffect } from "react";
 
 const Login = () => {
   interface dataSchema {

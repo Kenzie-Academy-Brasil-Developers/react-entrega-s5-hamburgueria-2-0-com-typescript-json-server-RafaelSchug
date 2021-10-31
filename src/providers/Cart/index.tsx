@@ -5,6 +5,7 @@ import {
   useState,
   useEffect,
 } from "react";
+import { toast } from "react-toastify";
 import api from "../../services/api";
 import { useAuth } from "../Auth";
 import { useProducts } from "../Products";
@@ -58,8 +59,18 @@ const CartProvider = ({ children }: Types) => {
             headers: { Authorization: `Bearer ${token}` },
           }
         )
-        .then((res) => getCartList())
-        .catch((error) => console.log(error));
+        .then(() => {
+          getCartList();
+          toast.success("Produto adicionado ao carrinho");
+        })
+        .catch(() => {
+          toast.error("Erro ao adicionar produto");
+        });
+    } else {
+      toast.info("Produto já incluso - Altere a quantidade em seu carrinho", {
+        autoClose: 2500,
+        toastId: `${productId}`,
+      });
     }
   };
 

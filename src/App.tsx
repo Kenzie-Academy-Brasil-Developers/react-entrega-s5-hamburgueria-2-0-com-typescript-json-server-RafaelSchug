@@ -28,7 +28,6 @@ const theme = createTheme({
 });
 
 function App() {
-  console.log(theme.components);
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
