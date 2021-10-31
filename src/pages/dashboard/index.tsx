@@ -20,10 +20,11 @@ const Dashboard = () => {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          minHeight: "calc(100vh - 60px)",
+          minHeight: "calc(100vh - 65px)",
           justifyContent: "center",
+          alignContent: "center",
+          gap: "30px",
           alignItems: "flex-start",
-          gap: "20px",
           padding: "50px",
           maxWidth: "1400px",
           margin: "auto",

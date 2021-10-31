@@ -120,7 +120,7 @@ const Header = () => {
                             size="small"
                             color="primary"
                             aria-label="add"
-                            style={{ color: "#fff" }}
+                            style={{ color: "#fff", boxShadow: "unset" }}
                             onClick={() => decreaseProductQuantity(item.id)}
                           >
                             <RemoveIcon />
@@ -132,7 +132,7 @@ const Header = () => {
                             size="small"
                             color="primary"
                             aria-label="add"
-                            style={{ color: "#fff" }}
+                            style={{ color: "#fff", boxShadow: "unset" }}
                             onClick={() => increaseProductQuantity(item.id)}
                           >
                             <AddIcon />
@@ -171,13 +171,14 @@ const Header = () => {
                       })}
                   </h3>
                 </TotalContainer>
-                <Button
-                  variant="contained"
-                  sx={{ color: "#fff" }}
-                  onClick={removeAllProductsFromCart}
-                >
-                  Remover Todos
-                </Button>
+                <div className="box_footer">
+                  <Button
+                    variant="contained"
+                    onClick={removeAllProductsFromCart}
+                  >
+                    Remover Todos
+                  </Button>
+                </div>
               </div>
             </>
           ) : (
@@ -232,7 +233,7 @@ const Header = () => {
           {!isAuth && (
             <Button
               variant="contained"
-              style={{ color: "#fff" }}
+              style={{ color: "#fff", fontWeight: "bold", boxShadow: "unset" }}
               onClick={() => history.push("/login")}
             >
               Login

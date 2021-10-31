@@ -34,8 +34,20 @@ export const StyledBox = styledMUI(Box)`
         overflow: auto;
         position: relative;
         margin: 10px 0;
-   
-        
+    }
+
+    .box_footer {
+        button {
+            width: 100%;
+            background: #E0E0E0;
+            color: white;
+            font-weight: bold;
+            box-shadow: unset;
+
+            :hover {
+                background: #828282;
+            }
+        }
     }
 `
 
@@ -45,7 +57,6 @@ export const CartCard = styled.div`
     gap: 20px;
     padding-bottom: 20px;
     
-
     .image_content {
         background: #d9d9d9;
         width: 82px;
@@ -85,7 +96,6 @@ export const CartCard = styled.div`
 
         :hover {
         color: #9e9e9e;
-
         }
     }
 

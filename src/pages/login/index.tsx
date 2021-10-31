@@ -59,12 +59,16 @@ const Login = () => {
             label="Email"
             variant="outlined"
             {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             id="outlined-basic"
             label="Senha"
             variant="outlined"
             {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <Button type="submit" variant="contained">
             Logar
@@ -72,7 +76,9 @@ const Login = () => {
           <span>
             Crie sua conta para saborear muitas delícias e matar sua fome
           </span>
-          <Button variant="contained">Cadastrar</Button>
+          <Button variant="contained" onClick={() => history.push("/register")}>
+            Cadastrar
+          </Button>
         </FormContainer>
       </ChildContainer>
     </MainContainer>

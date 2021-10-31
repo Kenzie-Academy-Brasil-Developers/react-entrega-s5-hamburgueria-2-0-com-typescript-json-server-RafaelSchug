@@ -8,15 +8,15 @@ export const MainContainer = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap:wrap;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
     gap: 30px;
     padding: 50px;
 
     @media screen and (max-width: 800px){
-        flex-direction: column;
-        justify-content: flex-start;
         padding: 10px;
+        align-items: flex-start;
+        gap: 10px;
     }
 
 `
@@ -27,7 +27,7 @@ export const ChildContainer = styled.div`
     flex: 1;
 
     @media screen and (max-width: 800px){
-        flex: 0;
+        flex: unset;
     }
 
     

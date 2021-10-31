@@ -2,6 +2,8 @@ import Banner from "../../components/Banner";
 import FormContainer from "../../components/FormContainer";
 import { TextField } from "@mui/material";
 import { MainContainer, ChildContainer } from "./styled";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
@@ -13,7 +15,7 @@ const Register = () => {
         <FormContainer>
           <div className="top_form">
             <h3>Cadastro</h3>
-            <p>Retornar para login</p>
+            <Link to="/login">Retornar para login</Link>
           </div>
           <TextField id="outlined-basic" label="Nome" variant="outlined" />
           <TextField id="outlined-basic" label="Email" variant="outlined" />
@@ -23,6 +25,7 @@ const Register = () => {
             label="Confirmar Senha"
             variant="outlined"
           />
+          <Button variant="contained">Cadastrar</Button>
         </FormContainer>
       </ChildContainer>
     </MainContainer>
