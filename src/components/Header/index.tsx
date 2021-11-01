@@ -182,7 +182,7 @@ const Header = () => {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Buscar…"
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{ "aria-label": "Buscar produtos" }}
               onChange={(e) => {
                 filterProductsByName(e.target.value);
                 setInput(e.target.value);
@@ -195,7 +195,7 @@ const Header = () => {
             <>
               <IconButton
                 size="large"
-                aria-label="show 4 new mails"
+                aria-label="Exibir carrinho"
                 color="inherit"
                 onClick={handleOpen}
               >
