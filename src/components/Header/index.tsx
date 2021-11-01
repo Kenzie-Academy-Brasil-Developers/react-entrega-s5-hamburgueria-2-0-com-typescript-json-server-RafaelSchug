@@ -176,7 +176,7 @@ const Header = () => {
         <Toolbar>
           <Logo onClick={resetFilter} />
           <div style={{ flex: "1" }} />
-          <Search sx={{ border: "1px solid #c3c3c3" }}>
+          <Search sx={{ border: "1px solid #c3c3c3", background: "#fff" }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
