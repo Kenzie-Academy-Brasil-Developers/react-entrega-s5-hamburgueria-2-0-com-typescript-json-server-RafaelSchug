@@ -54,6 +54,12 @@ const Header = () => {
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [input, setInput] = useState<string>("");
+
+  const resetFilter = () => {
+    setInput("");
+    filterProductsByName("");
+  };
 
   return (
     <>
@@ -168,16 +174,21 @@ const Header = () => {
         style={{ background: "#F5F5F5", boxShadow: "0 0 1px 0px #4c4c4c" }}
       >
         <Toolbar>
-          <Logo />
+          <Logo onClick={resetFilter} />
           <div style={{ flex: "1" }} />
           <Search sx={{ border: "1px solid #c3c3c3" }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Buscar…"
               inputProps={{ "aria-label": "search" }}
-              onChange={(e) => filterProductsByName(e.target.value)}
+              onChange={(e) => {
+                filterProductsByName(e.target.value);
+                setInput(e.target.value);
+              }}
+              value={input}
+              onKeyDown={(e) => e.code === "Escape" && resetFilter()}
             />
           </Search>
           {isAuth && (
