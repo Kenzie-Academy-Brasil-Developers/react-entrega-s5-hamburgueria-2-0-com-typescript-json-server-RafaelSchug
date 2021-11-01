@@ -30,6 +30,12 @@ export const ChildContainer = styled.div`
         flex: unset;
     }
 
+    span {
+        color: #999999;
+        font-size: 14px;
+        max-width: 320px;
+    }
+
     
 
 `
